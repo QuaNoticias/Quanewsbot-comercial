@@ -1,0 +1,32 @@
+# =============================================================================
+# Arquivo: requirements.txt
+# Dependências para o projeto V Comercial (NewsAgente)
+# =============================================================================
+
+# Framework para o dashboard web
+Flask==3.0.0
+
+# Para fazer requisições HTTP (ex: para a API do WordPress)
+requests==2.31.0
+
+# Para analisar o conteúdo HTML do site (parsing)
+beautifulsoup4==4.12.2
+
+# Para agendar as tarefas do agente (coletar, publicar, etc.)
+schedule==1.2.1
+
+# Para interagir com o Instagram (a ser detalhado depois)
+# instaloader==4.10 
+# A biblioteca oficial (facebook-business) será usada para postar.
+
+# Para manipulação de senhas e segurança
+bcrypt==4.1.2
+cryptography==42.0.5
+
+# Para enviar emails com os relatórios
+secure-smtplib==0.1.1
+
+# ... (outras dependências) ...
+instagrapi==1.16.31 # Exemplo de versão, o pip instalará a mais recente
+
+pytz

@@ -1,0 +1,30 @@
+{% extends "dashboard.html" %}
+
+{% block title %}Métricas de Notícias{% endblock %}
+
+{% block content %}
+    <table>
+        <thead>
+            <tr>
+                <th>Notícia</th>
+                <th>Score</th>
+                <th>Data da Análise</th>
+                <th>Publicado no Instagram?</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for metric in metrics %}
+            <tr>
+                <td><a href="{{ metric.url }}" target="_blank">{{ metric.title }}</a></td>
+                <td>{{ metric.engagement_score }}</td>
+                <td>{{ metric.analysis_date }}</td>
+                <td>{{ 'Sim' if metric.published_on_instagram else 'Não' }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4">Nenhuma métrica encontrada.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
