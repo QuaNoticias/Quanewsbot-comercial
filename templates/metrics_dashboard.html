@@ -1,0 +1,100 @@
+<!-- templates/metrics_dashboard.html - VERSÃO FINAL OPERACIONAL -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Operacional - NewsBot</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <style>
+        body { background-color: #1a1a2e; color: #e0e0e0; }
+        .card { background-color: #16213e; border: 1px solid #0f3460; border-radius: 15px; height: 100%; }
+        .card-header { background-color: transparent; border-bottom: 1px solid #0f3460; color: #e94560; font-weight: bold; text-align: center; }
+        .navbar-brand img { height: 40px; }
+        .chart-container { min-height: 300px; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark" style="background-color: #16213e;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="{{ url_for('static', filename='newsbot-logo.png') }}" alt="NewsBot Logo">
+                <span class="ms-2">Dashboard Operacional</span>
+            </a>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">Voltar ao Painel Admin</a>
+        </div>
+    </nav>
+
+    <div class="container-fluid p-4">
+        <div class="row">
+            <!-- Gráfico 1: Atividade do Agente -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">ATIVIDADE DO AGENTE</div>
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <div id="agent-chart" class="chart-container"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Gráfico 2: Coleta de Notícias -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">COLETA WORDPRESS</div>
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <div id="wordpress-chart" class="chart-container"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Gráfico 3: Login no Instagram -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">LOGIN INSTAGRAM</div>
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <div id="login-chart" class="chart-container"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Gráfico 4: Publicações -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">PUBLICAÇÕES INSTAGRAM</div>
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <div id="publish-chart" class="chart-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // --- FUNÇÃO PARA CRIAR GRÁFICOS DE STATUS (DONUT) ---
+        function createStatusChart(elementId, chartData, chartLabels, chartColors) {
+            const options = {
+                series: chartData,
+                chart: { type: 'donut', height: 300, foreColor: '#e0e0e0' },
+                labels: chartLabels,
+                colors: chartColors,
+                legend: { position: 'bottom' },
+                tooltip: { theme: 'dark' },
+                responsive: [{ breakpoint: 480, options: { chart: { width: 200 }, legend: { position: 'bottom' } } }]
+            };
+            new ApexCharts(document.querySelector(elementId), options).render();
+        }
+
+        // --- BUSCA OS DADOS DA API ---
+        fetch('/api/dashboard_charts')
+            .then(response => response.json())
+            .then(data => {
+                // Renderiza cada um dos 4 gráficos
+                createStatusChart("#agent-chart", data.agent_activity.data, data.agent_activity.labels, ['#008ffb', '#ff4560']);
+                createStatusChart("#wordpress-chart", data.wordpress_status.data, data.wordpress_status.labels, ['#00e396', '#ff4560']);
+                createStatusChart("#login-chart", data.login_status.data, data.login_status.labels, ['#00e396', '#ff4560']);
+                createStatusChart("#publish-chart", data.publish_status.data, data.publish_status.labels, ['#00e396', '#ff4560']);
+            })
+            .catch(error => console.error('Falha ao carregar dados do dashboard:', error));
+    });
+    </script>
+</body>
+</html>

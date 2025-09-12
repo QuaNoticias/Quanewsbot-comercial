@@ -1,0 +1,26 @@
+<!-- templates/client_config_content.html -->
+<div class="card">
+    <div class="card-header">
+        <h3>Configurações do Agente</h3>
+    </div>
+    <div class="card-body">
+        <p>Preencha os campos abaixo para que o agente possa se conectar às suas contas e começar a trabalhar.</p>
+        <form method="POST" action="{{ url_for('save_config') }}">
+            <div class="mb-3">
+                <label for="wordpress_url" class="form-label">URL do seu Site WordPress</label>
+                <input type="url" class="form-control" id="wordpress_url" name="wordpress_url" placeholder="https://seusite.com.br" value="{{ config.wordpress_url if config else '' }}" required>
+                <div class="form-text">A URL base do seu site. Ex: https://quanoticias.com.br</div>
+            </div>
+            <div class="mb-3">
+                <label for="instagram_user" class="form-label">Usuário do Instagram</label>
+                <input type="text" class="form-control" id="instagram_user" name="instagram_user" value="{{ config.instagram_user if config else '' }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="instagram_pass" class="form-label">Senha do Instagram</label>
+                <input type="password" class="form-control" id="instagram_pass" name="instagram_pass" placeholder="Deixe em branco para não alterar" required>
+                <div class="form-text">Sua senha é armazenada de forma segura.</div>
+            </div>
+            <button type="submit" class="btn btn-primary">Salvar Configurações</button>
+        </form>
+    </div>
+</div>
